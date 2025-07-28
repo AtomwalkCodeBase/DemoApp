@@ -175,24 +175,24 @@ const FeaturedImage = styled.img`
   }
 `;
 
-const ImageOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    transparent 60%,
-    rgba(0, 0, 0, 0.1) 100%
-  );
-  border-radius: 16px;
+// const ImageOverlay = styled.div`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+//   background: linear-gradient(
+//     to bottom,
+//     transparent 0%,
+//     transparent 60%,
+//     rgba(248, 243, 243, 0.1) 100%
+//   );
+//   border-radius: 16px;
 
-  @media (max-width: 768px) {
-    border-radius: 12px;
-  }
-`;
+//   @media (max-width: 768px) {
+//     border-radius: 12px;
+//   }
+// `;
 
 // Content Section
 const ContentSection = styled.section`
@@ -622,7 +622,6 @@ const BlogDetail = () => {
               src={blogContent.header.coverImage}
               alt={blogContent.header.title}
             />
-            <ImageOverlay />
           </FeaturedImageContainer>
         </HeaderContainer>
       </HeaderSection>

@@ -146,39 +146,34 @@ const Tooltip = styled.span`
 const Section = styled.section`
   width: 100%;
   min-height: 100vh;
-  background-color: ${(props) => props.bgColor || "#fff"};
   display: flex;
-  align-items: center;
+  background: ${(props) => props.bgColor || "#fff"};
+  padding: 50px;
   justify-content: center;
-  padding: 80px 20px;
+  align-items: center;
   position: relative;
   overflow: hidden;
 
-  @media (max-width: 1024px) {
-    min-height: auto;
+  @media (max-width: 900px) {
+    flex-direction: column;
     padding: 60px 20px;
-  }
-
-  @media (max-width: 768px) {
-    padding: 40px 20px;
   }
 `;
 
 const SectionContainer = styled.div`
-  width: 100%;
+  flex: 1;
   max-width: 1200px;
   display: flex;
   flex-direction: ${(props) => (props.reverse ? "row-reverse" : "row")};
   align-items: center;
   gap: 60px;
+  width: 100%;
+  justify-content: center;
 
-  @media (max-width: 1024px) {
-    gap: 40px;
-  }
-
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     flex-direction: column;
     gap: 30px;
+    max-width: 95vw;
   }
 `;
 
@@ -198,7 +193,7 @@ const SectionContent = styled.div`
   }
   
   @media (min-width: 1440px) {
-    padding: 90px;
+    padding: 43px;
   }
 `;
 
@@ -386,10 +381,7 @@ const IPCTAButton = styled.button`
   margin-top: 12px;
   box-shadow: 0 4px 18px rgba(0,0,0,0.15);
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s ease, transform 0.8s ease, background 0.3s ease;
+  transition: background 0.2s, color 0.2s, opacity 0.8s ease, transform 0.8s ease;
   transition-delay: 0.4s;
 
   &:hover {
@@ -494,30 +486,6 @@ const CardTitle = styled.div`
   color: #333;
   margin-bottom: 2px;
 `;
-
-// Card data
-const cards = [
-  {
-    image: "https://images.unsplash.com/photo-1589391886645-d51941baf7fb?q=80&w=1920&auto=format&fit=crop",
-    title: "IP Solutions",
-    icon: <FaLock />
-  },
-  {
-    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1920&auto=format&fit=crop",
-    title: "IP Lifecycle Management",
-    icon: <FaSyncAlt />
-  },
-  {
-    image: "https://images.unsplash.com/photo-1581094271901-8022df4466f9?q=80&w=1920&auto=format&fit=crop",
-    title: "IP Commercialization & Tech Transfer",
-    icon: <FaLaptopCode />
-  },
-  {
-    image: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=1920&auto=format&fit=crop",
-    title: "IP Solutions for Startups",
-    icon: <FaLightbulb />
-  }
-];
 
 const PopupOverlay = styled.div`
   position: fixed;
@@ -640,6 +608,30 @@ const ServiceItem = styled.div`
     box-shadow: 0 0 0 3px rgba(100, 100, 200, 0.3);
   }
 `;
+
+// Card data
+const cards = [
+  {
+    image: "https://images.unsplash.com/photo-1589391886645-d51941baf7fb?q=80&w=1920&auto=format&fit=crop",
+    title: "IP Solutions",
+    icon: <FaLock />
+  },
+  {
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1920&auto=format&fit=crop",
+    title: "IP Lifecycle Management",
+    icon: <FaSyncAlt />
+  },
+  {
+    image: "https://images.unsplash.com/photo-1581094271901-8022df4466f9?q=80&w=1920&auto=format&fit=crop",
+    title: "IP Commercialization & Tech Transfer",
+    icon: <FaLaptopCode />
+  },
+  {
+    image: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=1920&auto=format&fit=crop",
+    title: "IP Solutions for Startups",
+    icon: <FaLightbulb />
+  }
+];
 
 // Main Component
 const Herosection = () => {
