@@ -174,6 +174,7 @@ const SectionContainer = styled.div`
     flex-direction: column;
     gap: 30px;
     max-width: 95vw;
+    padding: 30px 20px;
   }
 `;
 
@@ -182,14 +183,20 @@ const SectionContent = styled.div`
   padding: 40px;
   color: ${(props) => props.textColor || "#fff"};
 
+  /*
   @media (max-width: 1024px) {
     padding: 20px;
   }
+    */
 
   @media (max-width: 768px) {
     width: 100%;
     padding: 0;
     text-align: center;
+  }
+    
+  @media (max-width: 900px) {
+    padding: 30px 20px;
   }
   
   @media (min-width: 1440px) {
@@ -313,7 +320,6 @@ const SplitSection = styled.section`
     background: #98D8EF; /* Maintain same color on mobile */
     padding: 30px 20px;
   }
-  padding:50px;
 `;
 
 const LeftPanel = styled.div`
