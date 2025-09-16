@@ -217,6 +217,12 @@ const subServiceContent = {
               {
                 description: "Power Electronics & Automation",
               },
+              {
+                description: "Semiconductor",
+              },
+              {
+                description: "Micro-Electro-Mechanical Systems(MEMS)",
+              },
             ],
           },
         },
