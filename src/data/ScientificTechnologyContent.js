@@ -76,6 +76,62 @@ const subServiceContent = {
           },
         },
         {
+          title: "Mechanical, Electronics & Telecommunications",
+          description:
+            "From machines to mobile—engineering innovation with legal clarity.",
+          typesSection: {
+            Heading: "Core Domains: ",
+            types: [
+              {
+                description: "Mechatronics & Mechanical Systems",
+              },
+              {
+                description: "Electronics & Robotics",
+              },
+              {
+                description: "Instrumentation & Control Systems",
+              },
+              {
+                description: "5G, IoT & Telecommunication Systems",
+              },
+              {
+                description: "Power Electronics & Automation",
+              },
+              {
+                description: "Semiconductor",
+              },
+              {
+                description: "Micro-Electro-Mechanical Systems(MEMS)",
+              },
+            ],
+          },
+        },
+        {
+          title: "Software, Digital Platforms & Emerging Tech",
+          description: "Protecting innovation in the code and in the cloud.",
+          typesSection: {
+            Heading: "Core Domains: ",
+            types: [
+              {
+                description:
+                  "Artificial Intelligence (AI) & Machine Learning (ML)",
+              },
+              {
+                description: "Software as a Medical Device (SaMD)",
+              },
+              {
+                description: "Blockchain in Healthcare & IP",
+              },
+              {
+                description: "Clinical Decision Support Systems",
+              },
+              {
+                description: "Bioinformatics & Data Security",
+              },
+            ],
+          },
+        },
+        {
           title: "Pharmaceuticals & Drug Development",
           description:
             "From molecule to market—legally fortified every step of the way.",
@@ -196,37 +252,6 @@ const subServiceContent = {
           },
         },
         {
-          title: "Mechanical, Electronics & Telecommunications",
-          description:
-            "From machines to mobile—engineering innovation with legal clarity.",
-          typesSection: {
-            Heading: "Core Domains: ",
-            types: [
-              {
-                description: "Mechatronics & Mechanical Systems",
-              },
-              {
-                description: "Electronics & Robotics",
-              },
-              {
-                description: "Instrumentation & Control Systems",
-              },
-              {
-                description: "5G, IoT & Telecommunication Systems",
-              },
-              {
-                description: "Power Electronics & Automation",
-              },
-              {
-                description: "Semiconductor",
-              },
-              {
-                description: "Micro-Electro-Mechanical Systems(MEMS)",
-              },
-            ],
-          },
-        },
-        {
           title: "Automotive & Mobility Innovations",
           description:
             "Accelerating IP strategy in the fast lane of innovation.",
@@ -251,31 +276,7 @@ const subServiceContent = {
             ],
           },
         },
-        {
-          title: "Software, Digital Platforms & Emerging Tech",
-          description: "Protecting innovation in the code and in the cloud.",
-          typesSection: {
-            Heading: "Core Domains: ",
-            types: [
-              {
-                description:
-                  "Artificial Intelligence (AI) & Machine Learning (ML)",
-              },
-              {
-                description: "Software as a Medical Device (SaMD)",
-              },
-              {
-                description: "Blockchain in Healthcare & IP",
-              },
-              {
-                description: "Clinical Decision Support Systems",
-              },
-              {
-                description: "Bioinformatics & Data Security",
-              },
-            ],
-          },
-        },
+
       ],
       closing:
         "By providing in-depth evaluations of R&D, technology, industry shifts, and market trends, we empower you to make informed decisions, shape your business strategy, and seize growth opportunities.",
