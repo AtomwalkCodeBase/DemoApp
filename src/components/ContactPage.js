@@ -505,7 +505,7 @@ export default function ContactPage() {
               <InfoTitle>Call Us</InfoTitle>
               <InfoText>
                 <div>Telephone: +(91)-9591600666</div>
-                <div>Office Landline: 91-080-28476777</div>
+                <div>Office Landline: 91-080-28476770</div>
               </InfoText>
               <ContactLink href="tel:+919591600666">
                 +(91)-9591600666

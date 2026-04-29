@@ -164,6 +164,7 @@ export default function Footer2() {
           <FooterLink href="/about#team">Our Team</FooterLink>
           <FooterLink href="/blog">Blog</FooterLink>
           <FooterLink href="/news">News and Events</FooterLink>
+          <FooterLink href="/newsletter">News Letter</FooterLink>
           <FooterLink href="/contact">Contact</FooterLink>
           <FooterLink href="/faq">FAQs</FooterLink>
         </FooterColumn>
@@ -175,7 +176,8 @@ export default function Footer2() {
           <FooterLink href="/Scientific-&-Technology-Solutions">Scientific & Technology Solutions</FooterLink>
           <FooterLink href="/ip-strategy-development">Strategic & Legal Advisory</FooterLink>
           <FooterLink href="/IP-Strategy-&-Roadmap-for-Startups">IPR Solutions for Startups</FooterLink>
-          <FooterLink href="/Custom-IP-Workshops-for-Teams">IP education and training</FooterLink>
+          <FooterLink href="/Custom-IP-Workshops-for-Teams">IP Education and training</FooterLink>
+          <FooterLink href="/ipCommercial">IP Commercialization</FooterLink>
         </FooterColumn>
 
         <FooterColumn>
@@ -202,7 +204,7 @@ export default function Footer2() {
           </ContactItem>
           <ContactItem>
             <ContactIcon>
-              <FaCalendarCheck  size={18} color="#FF4500" />
+              <FaCalendarCheck size={18} color="#FF4500" />
             </ContactIcon>
             <ContactText>Meeting by Appointment Only</ContactText>
           </ContactItem>

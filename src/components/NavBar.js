@@ -35,15 +35,15 @@ const Nav = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: ${props => props.isScrolled 
-    ? 'rgba(255, 255, 255, 0.9)' 
+  background: ${props => props.isScrolled
+    ? 'rgba(255, 255, 255, 0.9)'
     : 'linear-gradient(135deg, rgba(248, 248, 248, 0.2), rgba(255, 255, 255, 0.1))'};
   backdrop-filter: blur(${props => props.isScrolled ? '20px' : '10px'}) saturate(180%);
-  box-shadow: ${props => props.isScrolled 
-    ? '0 5px 20px rgba(0, 0, 0, 0.1)' 
+  box-shadow: ${props => props.isScrolled
+    ? '0 5px 20px rgba(0, 0, 0, 0.1)'
     : '0 2px 10px rgba(0, 0, 0, 0.05)'};
-  border-bottom: ${props => props.isScrolled 
-    ? '1px solid rgba(255, 255, 255, 0.2)' 
+  border-bottom: ${props => props.isScrolled
+    ? '1px solid rgba(255, 255, 255, 0.2)'
     : 'none'};
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   z-index: 1000;
@@ -203,8 +203,8 @@ const MenuItem = styled.a`
     props.forceBlackText
       ? '#fff'
       : props.isScrolled
-      ? '#222'
-      : '#222'};
+        ? '#222'
+        : '#222'};
   font-size: ${props => props.isScrolled ? '16px' : '18px'};
   font-weight: 600;
   letter-spacing: 1px;
@@ -679,7 +679,7 @@ const NavBar = () => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 992);
     };
-    
+
     checkIfMobile();
     window.addEventListener('resize', checkIfMobile);
     return () => window.removeEventListener('resize', checkIfMobile);
@@ -711,14 +711,14 @@ const NavBar = () => {
       const totalScroll = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       const currentProgress = (window.scrollY / totalScroll) * 100;
       setScrollProgress(currentProgress);
-      
+
       if (window.scrollY > 50) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -726,12 +726,12 @@ const NavBar = () => {
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target) && 
-          !event.target.closest('[data-menu-item="services"]')) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target) &&
+        !event.target.closest('[data-menu-item="services"]')) {
         setShowServicesDropdown(false);
       }
-      if (resourcesDropdownRef.current && !resourcesDropdownRef.current.contains(event.target) && 
-          !event.target.closest('[data-menu-item="resources"]')) {
+      if (resourcesDropdownRef.current && !resourcesDropdownRef.current.contains(event.target) &&
+        !event.target.closest('[data-menu-item="resources"]')) {
         setShowResourcesDropdown(false);
       }
     };
@@ -831,7 +831,7 @@ const NavBar = () => {
       id: 'IP Commercialization & Tech Transfer',
       title: 'IP Commercialization & Tech Transfer',
       subServices: [
-        { id: 'ipCommercial', name: 'Technology Transfer'},
+        { id: 'ipCommercial', name: 'Technology Transfer' },
         { id: 'patent-valuations', name: 'Patent Valuation' },
         { id: 'patent-due-diligence', name: 'Patent Due Diligence & Variability Analysis' },
         { id: 'competitive-landscape', name: 'Patent Landscaping Report' },
@@ -844,37 +844,37 @@ const NavBar = () => {
   ];
 
   const resourcesData = [
-    { 
-      id: 'blog', 
-      name: 'BLOGS', 
+    {
+      id: 'blog',
+      name: 'BLOGS',
       icon: '✍️', // Pencil writing (better for blogs)
       color: '#4e73df'
     },
-    { 
-      id: 'presentations', 
-      name: 'PRESENTATIONS', 
-      icon: '📊', 
+    {
+      id: 'presentations',
+      name: 'PRESENTATIONS',
+      icon: '📊',
       color: '#1cc88a'
     },
-    { 
-      id: 'faq', 
-      name: 'FREQUENTLY ASKED QUESTIONS (FAQs)', 
+    {
+      id: 'faq',
+      name: 'FREQUENTLY ASKED QUESTIONS (FAQs)',
       icon: '❓', // Question mark (most appropriate for FAQs)
       color: '#36b9cc',
     },
-    { 
-      id: 'links', 
-      name: 'LINKS TO ASSOCIATED WEBSITES', 
+    {
+      id: 'links',
+      name: 'LINKS TO ASSOCIATED WEBSITES',
       icon: '🔗', // Link symbol (perfect for website links)
       color: '#f6c23e'
     },
-    { 
-      id: 'knowledgehub', 
-      name: 'KNOWLEDGE HUB', 
+    {
+      id: 'knowledgehub',
+      name: 'KNOWLEDGE HUB',
       icon: '🧠',
       color: '#21fd14'
     }
-];
+  ];
   const menuItems = [
     { id: 'home', label: 'Home' },
     { id: 'about', label: 'About' },
@@ -882,7 +882,7 @@ const NavBar = () => {
     { id: 'resources', label: 'Resources' }
   ];
 
-  const forceWhiteTextPages = ['/', '/about', '/presentations','/news'];
+  const forceWhiteTextPages = ['/', '/about', '/presentations', '/news'];
   const forceBlackText = isScrolled ? false : forceWhiteTextPages.some(path => window.location.pathname === path);
 
   const navigateTo = (path) => {
@@ -905,7 +905,7 @@ const NavBar = () => {
   const navigatetocontact = () => {
     window.location.href = '/contact';
   };
-  
+
 
   return (
     <>
@@ -914,19 +914,19 @@ const NavBar = () => {
         <LogoWrapper onClick={() => window.location.href = '/'}>
           <Logo src={companylogo} isScrolled={isScrolled} alt="Company Logo" />
         </LogoWrapper>
-        
+
         <Hamburger isOpen={isOpen} onClick={toggleMenu}>
           <span></span>
           <span></span>
           <span></span>
         </Hamburger>
-        
+
         <Overlay isOpen={isOpen} onClick={closeMenu} />
-        
+
         <Menu isOpen={isOpen} isScrolled={isScrolled}>
           {menuItems.map((item, index) => (
             <MenuItemWrapper key={item.id} isMobile={isMobile}>
-              <MenuItem 
+              <MenuItem
                 isScrolled={isScrolled}
                 index={index}
                 forceBlackText={forceBlackText}
@@ -956,7 +956,7 @@ const NavBar = () => {
                 {item.label}
                 {(item.id === 'services' || item.id === 'resources') && (
                   <DropdownIcon isOpen={
-                    (item.id === 'services' && showServicesDropdown) || 
+                    (item.id === 'services' && showServicesDropdown) ||
                     (item.id === 'resources' && showResourcesDropdown)
                   }>▼</DropdownIcon>
                 )}
@@ -970,7 +970,7 @@ const NavBar = () => {
                       <MobileServiceTitle>{service.title}</MobileServiceTitle>
                       <MobileServiceList>
                         {service.subServices.map((subservice) => (
-                          <MobileServiceItem 
+                          <MobileServiceItem
                             key={subservice.id}
                             onClick={() => navigateTo(subservice.id)}
                           >
@@ -982,7 +982,7 @@ const NavBar = () => {
                   ))}
                 </MobileDropdown>
               )}
-              
+
 
               {/* Mobile Resources Dropdown */}
               {isMobile && item.id === 'resources' && (
@@ -991,7 +991,7 @@ const NavBar = () => {
                     <MobileServiceTitle>Explore our Resources</MobileServiceTitle>
                     <MobileServiceList>
                       {resourcesData.map((resource) => (
-                        <MobileServiceItem 
+                        <MobileServiceItem
                           key={resource.id}
                           onClick={() => navigateTo(resource.id)}
                         >
@@ -1009,7 +1009,7 @@ const NavBar = () => {
 
         {/* Desktop Mega Dropdown Menu for Services (full width) */}
         {!isMobile && showServicesDropdown && (
-          <ServicesMegaDropdown 
+          <ServicesMegaDropdown
             ref={dropdownRef}
             isScrolled={isScrolled}
             onMouseLeave={() => setShowServicesDropdown(false)}
@@ -1037,25 +1037,25 @@ const NavBar = () => {
 
         {/* Desktop Mega Dropdown Menu for Resources (auto width) */}
         {!isMobile && showResourcesDropdown && (
-          <ResourcesMegaDropdown 
+          <ResourcesMegaDropdown
             ref={resourcesDropdownRef}
             isScrolled={isScrolled}
             onMouseLeave={() => setShowResourcesDropdown(false)}
           >
-              <ResourcesHeader>Explore our Resources</ResourcesHeader>
-              <ResourcesList>
-                {resourcesData.map((resource) => (
-                  <ResourceItem 
-                    key={resource.id} 
-                    onClick={() => navigateTo(resource.id)}
-                  >
-                    <ResourceIcon color={resource.color}>
-                      {resource.icon}
-                    </ResourceIcon>
-                    <ResourceName>{resource.name}</ResourceName>
-                  </ResourceItem>
-                ))}
-              </ResourcesList>
+            <ResourcesHeader>Explore our Resources</ResourcesHeader>
+            <ResourcesList>
+              {resourcesData.map((resource) => (
+                <ResourceItem
+                  key={resource.id}
+                  onClick={() => navigateTo(resource.id)}
+                >
+                  <ResourceIcon color={resource.color}>
+                    {resource.icon}
+                  </ResourceIcon>
+                  <ResourceName>{resource.name}</ResourceName>
+                </ResourceItem>
+              ))}
+            </ResourcesList>
           </ResourcesMegaDropdown>
         )}
       </Nav>

@@ -196,7 +196,7 @@ const RemoveImageButton = styled.button`
   font-size: 0.95rem;
 `;
 
-const CDN_BASE_URL = 'https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/';
+const CDN_BASE_URL = 'https://cdn.jsdelivr.net/gh/lifeintelect/storeimage@main/';
 
 function KnowledgeForm() {
   const { id } = useParams();
@@ -222,10 +222,10 @@ function KnowledgeForm() {
         if (postSnap.exists()) {
           const postData = postSnap.data();
           const fullImages = Array.isArray(postData.images) ? postData.images : [postData.image || ''];
-          const relativeImages = fullImages.map(img => 
-            img.replace(/^https?:\/+cdn\.jsdelivr\.net\/gh\/AtomwalkCodeBase\/Blogs@main\/?/i, '')
+          const relativeImages = fullImages.map(img =>
+            img.replace(/^https?:\/+cdn\.jsdelivr\.net\/gh\/lifeintelect\/storeimage@main\/?/i, '')
           );
-          
+
           setFormData({
             platform: postData.platform || 'linkedin',
             content: postData.content || '',
@@ -287,9 +287,9 @@ function KnowledgeForm() {
 
   const getFullImageUrl = (path) => {
     if (!path) return '';
-    if (/^https:\/\/cdn\.jsdelivr\.net\/gh\/AtomwalkCodeBase\/Blogs@main\//i.test(path)) return path;
+    if (/^https:\/\/cdn\.jsdelivr\.net\/gh\/lifeintelect\/storeimage@main\//i.test(path)) return path;
 
-    const cleanPath = path.replace(/^https?:\/+cdn\.jsdelivr\.net\/gh\/AtomwalkCodeBase\/Blogs@main\/?/i, '');
+    const cleanPath = path.replace(/^https?:\/+cdn\.jsdelivr\.net\/gh\/lifeintelect\/storeimage@main\/?/i, '');
     return `${CDN_BASE_URL}${cleanPath}`.replace(/([^:]\/)\/+/g, '$1');
   };
 

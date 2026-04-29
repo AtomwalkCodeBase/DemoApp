@@ -4,6 +4,7 @@ import ServicesSection from './ServicesSection'
 import AboutSection from './AboutSection'
 import ContactPage from './ContactPage'
 import TestimonialAndCustomersPage from './TestimonialAndCustomersPage'
+// import LatestThinking from './LatestThinking'
 // import Herosection1 from './Herosection1'
 
 const FrontPage = () => {

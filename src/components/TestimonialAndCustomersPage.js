@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { ChevronLeft, ChevronRight, Star, Quote, Users, Award, Heart } from 'lucide-react';
-import company   from '../assets/img/LOGO/Agrimaa biosciences.png'
-import company2  from '../assets/img/LOGO/Adityavani.jpg'
-import company3  from '../assets/img/LOGO/AI Robotx.png'
-import company4  from '../assets/img/LOGO/ALL INDIA INSTITUTE OF MEDICAL SCIENCES.jpg'
-import company5  from '../assets/img/LOGO/Althera.jpg'
-import company6  from '../assets/img/LOGO/Anand diagnostic laboratory.png'
-import company7  from '../assets/img/LOGO/Ariel LTD.(ASI).png'
-import company8  from '../assets/img/LOGO/Aristogen biosciences.png'
-import company9  from '../assets/img/LOGO/Atomwalk.png'
+import company from '../assets/img/LOGO/Agrimaa biosciences.png'
+import company2 from '../assets/img/LOGO/Adityavani.jpg'
+import company3 from '../assets/img/LOGO/AI Robotx.png'
+import company4 from '../assets/img/LOGO/ALL INDIA INSTITUTE OF MEDICAL SCIENCES.jpg'
+import company5 from '../assets/img/LOGO/Althera.jpg'
+import company6 from '../assets/img/LOGO/Anand diagnostic laboratory.png'
+import company7 from '../assets/img/LOGO/Ariel LTD.(ASI).png'
+import company8 from '../assets/img/LOGO/Aristogen biosciences.png'
+import company9 from '../assets/img/LOGO/Atomwalk.png'
 // import company10 from '../assets/img/LOGO/Balya group.jpg'
 import company11 from '../assets/img/LOGO/Bio-gen.png'
 import company12 from '../assets/img/LOGO/Bioinnovation center.png'
@@ -83,6 +83,7 @@ import company79 from '../assets/img/LOGO/xavier institue of management, bhubane
 import company80 from '../assets/img/LOGO/yenepoya technology incubator.png'
 import company81 from '../assets/img/LOGO/Yenepoya.png'
 import company82 from '../assets/img/LOGO/ZOFRA.jpg'
+import LatestThinking from './LatestThinking';
 
 
 
@@ -138,7 +139,7 @@ const shimmer = keyframes`
 // // Global Styles
 // const GlobalStyle = createGlobalStyle`
 //   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-  
+
 //   body {
 //     font-family: 'Poppins', sans-serif;
 //     margin: 0;
@@ -146,11 +147,11 @@ const shimmer = keyframes`
 //     box-sizing: border-box;
 //     overflow-x: hidden;
 //   }
-  
+
 //   *, *:before, *:after {
 //     box-sizing: inherit;
 //   }
-  
+
 //   @keyframes blob {
 //     0% { transform: translate(0px, 0px) scale(1); }
 //     33% { transform: translate(30px, -50px) scale(1.1); }
@@ -337,7 +338,7 @@ const BrandLogo = styled.div`
 //   -webkit-background-clip: text;
 //   -webkit-text-fill-color: transparent;
 //   opacity: 0.4;
-  
+
 //   ${BrandLogo}:hover & {
 //     opacity: 1;
 //   }
@@ -420,10 +421,10 @@ const TestimonialCard = styled.div`
   flex-direction: column;
   transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   opacity: ${props => (props.active ? 1 : 0)};
-  transform: ${props => 
-    props.active 
-      ? 'translateX(0) rotateY(0) scale(1)' 
-      : props.direction === 'next' 
+  transform: ${props =>
+    props.active
+      ? 'translateX(0) rotateY(0) scale(1)'
+      : props.direction === 'next'
         ? 'translateX(50px) rotateY(5deg) scale(0.9)'
         : 'translateX(-50px) rotateY(-5deg) scale(0.9)'
   };
@@ -474,7 +475,7 @@ const TestimonialProfile = styled.div`
 //   overflow: hidden;
 //   margin-right: 20px;
 //   position: relative;
-  
+
 //   &:before {
 //     content: '';
 //     position: absolute;
@@ -980,7 +981,7 @@ const TestimonialAndCustomersPage = () => {
     const stepTime = duration / steps;
 
     const timer = setInterval(() => {
-      setStats(prevStats => 
+      setStats(prevStats =>
         prevStats.map(stat => {
           const increment = stat.target / steps;
           const newValue = Math.min(stat.value + increment, stat.target);
@@ -990,7 +991,7 @@ const TestimonialAndCustomersPage = () => {
           };
         })
       );
-      
+
       if (stats.every(stat => stat.value >= stat.target)) {
         clearInterval(timer);
       }
@@ -1001,7 +1002,7 @@ const TestimonialAndCustomersPage = () => {
     const interval = setInterval(() => {
       nextTestimonial();
     }, 6000);
-    
+
     return () => clearInterval(interval);
   }, []);
 
@@ -1025,7 +1026,7 @@ const TestimonialAndCustomersPage = () => {
         <BackgroundBlob />
         <BackgroundBlob />
         <BackgroundBlob />
-        
+
         {/* Header */}
         <Header>
           <Title>Empowering Clients Through Unwavering Assistance</Title>
@@ -1033,7 +1034,7 @@ const TestimonialAndCustomersPage = () => {
             Discover why hundreds of companies trust us with their business needs and hear their success stories directly from the source.
           </Subtitle>
         </Header>
-        
+        <LatestThinking></LatestThinking>
         {/* Brands Section */}
         <BrandsSection>
           <SectionTitle>Trusted by Industry Leaders</SectionTitle>
@@ -1047,7 +1048,7 @@ const TestimonialAndCustomersPage = () => {
             </LogoScroll>
           </BrandScrollContainer>
         </BrandsSection>
-        
+
         {/* Testimonials Section */}
         <TestimonialsSection>
           <SectionTitle>Client Testimonials</SectionTitle>
@@ -1057,42 +1058,42 @@ const TestimonialAndCustomersPage = () => {
                 <ChevronLeft size={24} />
               </TestimonialArrow>
             </TestimonialControl>
-            
+
             <TestimonialSlider>
               {testimonials.map((testimonial, index) => (
-                <TestimonialCard 
-                  key={index} 
+                <TestimonialCard
+                  key={index}
                   active={index === activeTestimonial}
                   direction={direction}
                 >
                   <QuoteIconWrapper>
                     <Quote size={48} />
                   </QuoteIconWrapper>
-                  
+
                   <TestimonialProfile>
                     {/* <ProfileImageWrapper>
                       <ProfileImage />
                     </ProfileImageWrapper> */}
-                    
+
                     <ProfileInfo>
                       <ProfileName>{testimonial.name}</ProfileName>
                       <ProfilePosition>{testimonial.position}</ProfilePosition>
                     </ProfileInfo>
                   </TestimonialProfile>
-                  
+
                   <TestimonialRating>
                     {Array(testimonial.stars).fill().map((_, i) => (
                       <Star key={i} size={18} fill="#ffc107" />
                     ))}
                   </TestimonialRating>
-                  
+
                   <TestimonialContent>
                     {testimonial.text}
                   </TestimonialContent>
                 </TestimonialCard>
               ))}
             </TestimonialSlider>
-            
+
             <TestimonialControl onClick={nextTestimonial}>
               <TestimonialArrow>
                 <ChevronRight size={24} />
@@ -1100,7 +1101,7 @@ const TestimonialAndCustomersPage = () => {
             </TestimonialControl>
           </TestimonialContainer>
         </TestimonialsSection>
-        
+
         {/* Stats Section */}
         <StatsSection ref={statsRef}>
           <StatsCard>
@@ -1115,7 +1116,7 @@ const TestimonialAndCustomersPage = () => {
             ))}
           </StatsCard>
         </StatsSection>
-        
+
         {/* CTA Section */}
         <CTASection>
           <CTAContent>

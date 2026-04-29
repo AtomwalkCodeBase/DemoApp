@@ -30,6 +30,8 @@ import PresentationPage from "./components/Presentation";
 import KnowledgeHub from "./components/Knowledge/Knowledge";
 import KnowledgeDetails from "./components/Knowledge/KnowledgeDetail";
 import KnowledgeForm from "./components/Knowledge/KnowledgeForm";
+import Newsletter from "./components/Newsletter/Newsletter";
+import NewsletterDetail from "./components/Newsletter/NewsletterDetail";
 
 // Theme configuration
 const themes = {
@@ -142,10 +144,12 @@ const mainRoutes = [
   { path: "/news/edit/:id", component: NewsEventForm, title: "AddNewsEventForm" },
   { path: "/links", component: LinkWebsite, title: "LinksWebsite" },
   { path: "/presentations", component: PresentationPage, title: "Presentation" },
-  {path: "/knowledgehub", component: KnowledgeHub, title:"Knowledge"},
+  { path: "/knowledgehub", component: KnowledgeHub, title: "Knowledge" },
   { path: "/knowledgehub/:id", component: KnowledgeDetails, title: "AddKnowledgeDetails" },
-  {path:"/knowledgehub/addknowledgehub", component: KnowledgeForm, title:"Addknowledgehub"},
-  {path:"/knowledgehub/edit/:id", component: KnowledgeForm, title:"Addknowledgehub"}
+  { path: "/knowledgehub/addknowledgehub", component: KnowledgeForm, title: "Addknowledgehub" },
+  { path: "/knowledgehub/edit/:id", component: KnowledgeForm, title: "Addknowledgehub" },
+  { path: "/newsletter", component: Newsletter, title: "NewsLetter" },
+  { path: "/newsletter/:id", component: NewsletterDetail, title: "NewsLetterdetails" }
 
 ];
 

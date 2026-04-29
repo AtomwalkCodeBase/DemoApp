@@ -23,7 +23,7 @@ const BlogForm = () => {
     coverImagePath: '',
     date: getToday(),
     sections: [],
-    category:''
+    category: ''
   });
 
   useEffect(() => {
@@ -31,27 +31,27 @@ const BlogForm = () => {
       const strippedSections = blogContent.sections.map(section => ({
         ...section,
         contents: section.contents.map(content => {
-          if (content.type === 'image' && content.data.startsWith('https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/')) {
+          if (content.type === 'image' && content.data.startsWith('https://cdn.jsdelivr.net/gh/lifeintelect/storeimage@main/')) {
             return {
               ...content,
-              data: content.data.replace('https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/', '')
+              data: content.data.replace('https://cdn.jsdelivr.net/gh/lifeintelect/storeimage@main/', '')
             };
           }
           return content;
         })
       }));
-  
+
       setFormData({
         title: blog.title,
         tagline: blog.tagline,
-        coverImagePath: blog.coverImage.replace('https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/', ''),
+        coverImagePath: blog.coverImage.replace('https://cdn.jsdelivr.net/gh/lifeintelect/storeimage@main/', ''),
         date: blog.date || getToday(),
         sections: strippedSections,
         category: blog.category || ''
       });
     }
   }, [id, blog, blogContent]);
-  
+
 
   const addSection = () => {
     setFormData(prev => ({
@@ -184,7 +184,7 @@ const BlogForm = () => {
         tagline: formData.tagline,
         coverImage: coverImageUrl,
         category: formData.category,
-        date: formData.date 
+        date: formData.date
       });
 
       // Process sections to convert image paths to full URLs
@@ -226,7 +226,7 @@ const BlogForm = () => {
             onChange={(e) => updateContent(sectionIndex, contentIndex, e.target.value)}
             placeholder="Enter paragraph text..."
             rows={10}
-            style={{width: '100%'}}
+            style={{ width: '100%' }}
           />
         );
       case 'image':
@@ -236,7 +236,7 @@ const BlogForm = () => {
             value={content.data}
             onChange={(e) => updateContent(sectionIndex, contentIndex, e.target.value)}
             placeholder="folder/image.jpg"
-            style={{width: '100%', height: '50px'}}
+            style={{ width: '100%', height: '50px' }}
           />
         );
       case 'bullets':
@@ -275,9 +275,9 @@ const BlogForm = () => {
   };
 
   return (
-    <div className="blog-form" style={{marginTop: 120, marginBottom: 50}}>
+    <div className="blog-form" style={{ marginTop: 120, marginBottom: 50 }}>
       <h2>{id ? 'Edit Blog' : 'Create New Blog'}</h2>
-      
+
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Title</label>
@@ -383,7 +383,7 @@ const BlogForm = () => {
                     </div>
                   </div>
                 ))}
-                
+
                 <div className="add-content-buttons">
                   <button type="button" onClick={() => addContent(sectionIndex, 'paragraph')}>
                     Add Paragraph
@@ -401,7 +401,7 @@ const BlogForm = () => {
               </div>
             </div>
           ))}
-          
+
           <button type="button" onClick={addSection} className="add-section-btn">
             Add Section
           </button>
