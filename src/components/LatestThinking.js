@@ -1,27 +1,70 @@
-import React from "react";
-import styled, { keyframes } from "styled-components";
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-`;
-const Section = styled.section`
-  padding: 4rem 6rem;
-  background: #ffffff;
+import React, { useState } from "react";
+import styled from "styled-components";
+
+/* DATA */
+const data = [
+  {
+    id: 1,
+    tag: "BLOG",
+    title: "Beyond Human Limits: AI-Powered Cancer Diagnosis",
+    desc: "AI and Cancer / By Lifeintelect / 8 Minutes of reading",
+    link: "/blog/GmHSyVWztWTa1tlB9tsf",
+    img: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=70", // lab equipment / maintenance
+  },
+  {
+    id: 2,
+    tag: " BLOG",
+    title: "Securing the Digital Frontier: How AI Is Transforming Data Protection",
+    desc: "Smarter Defense for the Modern Cyber Frontier",
+    link: "/blog/Ibb1KF27a5QryTWqrj8b",
+    img: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=70", // seafood industry
+  },
+  {
+    id: 3,
+    tag: "NEWS",
+    title: "Lifeintelect Takes the Stage at Revolutionary Bio Manufacturing Summit in Gauhati",
+    desc: "Driving Biotech Innovation at Gauhati's Global Summit",
+    img: "https://newscenter.lbl.gov/wp-content/uploads/2025/04/XBD201805-00351-002.jpg", // analytics / reports / dashboard
+    link: "/news/5M17GGaMcmax8AP9LHnl",
+  },
+  {
+    id: 4,
+    tag: "EVENT",
+    title: "Lifeintelect Participates in IISc Women's Day Conference",
+    desc: "Women's Day Conference /  2 minutes of reading",
+    link: "/news/bfoVZAKEcxZgfyryemeY",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDLKVhFnnTDSImAn_AamNpSEEaS33N-1QwRA&s", // healthcare / hospital
+  },
+
+];
+
+/* SECTION */
+export const Section = styled.section`
+  padding: 5rem 6rem;
+  background-color: #ffffff;
+  background-image: url("https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/pattern-scale.svg");
+  overflow: hidden;
+
+  @media (max-width: 992px) {
+    padding: 4rem 3rem;
+  }
 
   @media (max-width: 768px) {
-    padding: 2rem;
+    padding: 3rem 1.5rem;
   }
 `;
 
-const Header = styled.div`
+/* HEADER */
+export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 2rem;
+  gap: 20px;
 
   @media (max-width: 768px) {
     flex-direction: column;
-    gap: 1rem;
+    align-items: flex-start;
   }
 `;
 
@@ -35,30 +78,92 @@ const Title = styled.h1`
   text-transform: uppercase;
   display: flex;
   justify-content: center;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 
 `;
 
 const Description = styled.p`
   max-width: 450px;
   color: #555;
-  font-size: 0.95rem;
-  line-height: 1.6;
+  max-width: 600px;
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
 `;
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 260px;
-  gap: 1.5rem;
+/* CONTROLS */
+export const Controls = styled.div`
+  display: flex;
+  gap: 10px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: flex-end;
+  }
 `;
 
-const Card = styled.div`
-  position: relative;
-  overflow: hidden;
+export const Arrow = styled.button`
+  width: 50px;
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  background: #0047ab;
+  color: white;
   cursor: pointer;
-  background: #000;
-  contain: layout paint;
+  transition: 0.3s;
+
+  &:hover {
+    background: #000;
+  }
+
+  @media (max-width: 768px) {
+    width: 45px;
+    height: 36px;
+  }
+`;
+
+/* SLIDER */
+export const SliderWrapper = styled.div`
+  overflow: hidden;
+`;
+
+export const Slider = styled.div`
+  display: flex;
+  transition: transform 0.5s ease;
+
+  /* Desktop: 3 cards */
+  transform: ${({ index }) => `translateX(-${index * 33.333}%)`};
+
+  @media (max-width: 992px) {
+    /* Tablet: 2 cards */
+    transform: ${({ index }) => `translateX(-${index * 50}%)`};
+  }
+
+  @media (max-width: 768px) {
+    /* Mobile: 1 card */
+    transform: ${({ index }) => `translateX(-${index * 100}%)`};
+  }
+`;
+
+/* CARD */
+export const Card = styled.div`
+  min-width: 33.333%;
+  height: 420px;
+  position: relative;
+  padding: 0 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+  @media (max-width: 992px) {
+    min-width: 50%;
+    height: 380px;
+  }
+
+  @media (max-width: 768px) {
+    min-width: 100%;
+    height: 320px;
+    padding: 0 5px;
+  }
 
   &:hover img {
     transform: scale(1.05);
@@ -70,149 +175,127 @@ const Card = styled.div`
   }
 `;
 
-const LargeCard = styled(Card)`
-  grid-row: span 2;
+export const CardInner = styled.div`
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  /* border-radius: 12px; */
 `;
 
-const Image = styled.img`
+/* IMAGE */
+export const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: 0.4s;
 `;
 
-const Overlay = styled.div`
+/* OVERLAY */
+export const Overlay = styled.div`
   position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 14px;
+  justify-content: space-between;
+  padding: 1rem;
 
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.9),
-    rgba(0, 0, 0, 0.2)
-  );
+  background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.1));
 `;
 
-const Tag = styled.div`
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  font-size: 10px;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 4px 8px;
+/* TAG */
+export const Tag = styled.div`
+  background: rgba(0,0,0,0.5);
+  padding: 6px 10px;
+  font-size: 12px;
   color: white;
+  width: fit-content;
+
+  @media (max-width: 768px) {
+    font-size: 11px;
+  }
 `;
 
-const CardTitle = styled.h3`
+/* TITLE TEXT */
+export const TitleText = styled.h3`
   color: white;
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 6px;
+  font-size: 1.2rem;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
-const CardDescription = styled.p`
+/* DESCRIPTION */
+export const Desc = styled.p`
+  font-size: 0.9rem;
   color: white;
-  font-size: 0.85rem;
-  line-height: 1.4;
-
   opacity: 0;
   transform: translateY(20px);
-  transition: all 0.3s ease;
+  transition: 0.3s;
+
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+    opacity: 1; /* Always visible on mobile */
+    transform: translateY(0);
+  }
 `;
 
-
-// ✅ DATA ARRAY (your content)
-const contentData = [
-    {
-        type: "BLOG",
-        title: "Beyond Human Limits: AI-Powered Cancer Diagnosis ",
-        description: "AI and Cancer / By Lifeintelect / 8 Minutes of reading ",
-        link: "/blog/10S85EwTQ4KyLzmp8Zvo",
-        image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=70"
-    },
-    {
-        type: "BLOG",
-        title: "Securing the Digital Frontier: How AI Is Transforming Data Protection",
-        description: "Smarter Defense for the Modern Cyber Frontier",
-        link: "/blog/GmHSyVWztWTa1tlB9tsf",
-        image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=70"
-    },
-    {
-        type: "BLOG",
-        title: "When a Name Becomes a Trademark: The IPL Robot Dog Champak Controversy",
-        description: "Champak vs BCCI / By Lifeintelect / 5 minutes of reading",
-        link: "/blog/Ibb1KF27a5QryTWqrj8b",
-        image: "https://www.chhotacfo.com/blog/wp-content/uploads/2024/03/trademark-registration-bangalore.jpg"
-    },
-    {
-        type: "EVENT",
-        title: "Lifeintelect Participates in IISc Women's Day Conference ",
-        description: "Women's Day Conference /  2 minutes of reading",
-        link: "/news/bfoVZAKEcxZgfyryemeY",
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDLKVhFnnTDSImAn_AamNpSEEaS33N-1QwRA&s"
-    },
-    {
-        type: "NEWS",
-        title: "Lifeintelect Takes the Stage at Revolutionary Bio Manufacturing Summit in Gauhati",
-        description: "Driving Biotech Innovation at Gauhati's Global Summit",
-        link: "/news/5M17GGaMcmax8AP9LHnl",
-        image: "https://newscenter.lbl.gov/wp-content/uploads/2025/04/XBD201805-00351-002.jpg"
-    },
-    {
-        type: "EVENT",
-        title: "World Intellectual Property Organisation (WIPO)",
-        description: "Global forum for intellectual property services, policy, information, and cooperation.",
-        link: "https://www.wipo.int/portal/en/index.html",
-        image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=70"
-    },
-    {
-        type: "EVENT",
-        title: "United States Patent and Trademark Office (USPTO)",
-        description: "Federal agency for granting U.S. patents and registering trademarks.",
-        link: "https://www.uspto.gov/",
-        image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=70"
-    }
-];
-
 const LatestThinking = () => {
-    return (
-        <Section>
-            {/* <Header> */}
-            <Title>Latest Thinking</Title>
-            {/* <Description>
-                    Perspectives and research on how AI-driven enterprise platforms are transforming operations across industries from manufacturing and research laboratories to customer systems.
-                </Description> */}
-            {/* </Header> */}
+  const [index, setIndex] = useState(0);
+  const getVisibleCards = () => {
+    if (window.innerWidth < 768) return 1;
+    if (window.innerWidth < 992) return 2;
+    return 3;
+  }
+  const next = () => {
+    if (index < data.length - getVisibleCards()) {
+      setIndex(index + 1);
+    }
+  };
+  const prev = () => {
+    if (index > 0) {
+      setIndex(index - 1);
+    }
+  };
 
-            <Grid>
-                {contentData.map((item, index) => {
-                    const isLarge = index === 0 || index === 4;
-                    const Component = isLarge ? LargeCard : Card;
+  return (
+    <Section>
+      <Header>
+        <div>
+          <Title>Latest Thinking</Title>
+          {/* <Subtitle>
+            Latest Innovations in our Product Development
+          </Subtitle> */}
+        </div>
 
-                    return (
-                        <Component
-                            key={index}
-                            onClick={() => window.open(item.link, "_blank")}
-                        >
-                            <Image loading="lazy" src={item.image} />
+        <Controls>
+          <Arrow onClick={prev}>←</Arrow>
+          <Arrow onClick={next}>→</Arrow>
+        </Controls>
+      </Header>
 
-                            <Tag>{item.type}</Tag>
+      <SliderWrapper>
+        <Slider index={index}>
+          {data.map((item) => (
+            <Card key={item.id} onClick={() => window.location.href = item.link}>
+              <CardInner>
+                <Image src={item.img} />
 
-                            <Overlay>
-                                <CardTitle>{item.title}</CardTitle>
-                                <CardDescription className="desc">
-                                    {item.description}
-                                </CardDescription>
-                            </Overlay>
-                        </Component>
-                    );
-                })}
-            </Grid>
-        </Section>
-    );
+                <Overlay>
+                  <Tag>{item.tag}</Tag>
+
+                  <div>
+                    <TitleText>{item.title}</TitleText>
+                    <Desc className="desc">{item.desc}</Desc>
+                  </div>
+                </Overlay>
+              </CardInner>
+            </Card>
+          ))}
+        </Slider>
+      </SliderWrapper>
+    </Section>
+  );
 };
 
 export default LatestThinking;
