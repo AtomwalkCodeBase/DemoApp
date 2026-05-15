@@ -37,6 +37,7 @@ const Slide = styled.div`
 `;
 
 const Image = styled.img`
+ margin-top: 40px;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -186,15 +187,15 @@ const TextOverlay = styled.div`
 //   justify-content: center;
 //   z-index: 10;
 //   transition: background 0.3s;
-  
+
 //   &:hover {
 //     background: rgba(255, 255, 255, 0.4);
 //   }
-  
+
 //   &:focus {
 //     outline: none;
 //   }
-  
+
 //   ${props => props.left ? 'left: 20px;' : 'right: 20px;'}
 // `;
 
@@ -228,117 +229,117 @@ const Dot = styled.button`
 `;
 
 export default function FullscreenCarousel() {
-	const [currentIndex, setCurrentIndex] = useState(0);
-	const intervalRef = useRef(null);
-  
-	const items = [
-	  {
-		src: Ptent,
-		author: 'LIFEINTELECT',
-		// title: 'Zoom out and focus deep. That’s how we view your project ',
-		topic: 'Zoom out and Focus deep. That’s how we view your Project.',
-		// description:
-		//   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-	  },
-	  {
-		src: Ptent2,
-		author: 'LIFEINTELECT',
-		// title: 'Copyright Services',
-		topic: 'For Thoughts to Thrive, let us help Nurture your Idea.',
-		// description:
-		//   'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-	  },
-	  {
-		src: Ptent3,
-		author: 'LIFEINTELECT',
-		// title: 'Trademark Service',
-		topic: 'Design with Innovation, Strengthen with Protection.',
-		// description:
-		//   'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-	  },
-	  {
-		src: Ptent4,
-		author: 'LIFEINTELECT',
-		// title: 'IP Lifecycle Management',
-		topic: 'Plan, Protect, Strategize and Excel with us.',
-		// description:
-		//   'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-	  },
-	];
-  
-	const nextSlide = () => {
-	  setCurrentIndex((prev) => (prev + 1) % items.length);
-	};
-  
-	// const prevSlide = () => {
-	//   setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
-	// };
-  
-	const goToSlide = (index) => {
-	  setCurrentIndex(index);
-	};
-  
-	const resetTimer = () => {
-	  if (intervalRef.current) {
-		clearInterval(intervalRef.current);
-	  }
-	  intervalRef.current = setInterval(() => {
-		nextSlide();
-	  }, 3000);
-	};
-  
-	useEffect(() => {
-	  resetTimer();
-	  return () => clearInterval(intervalRef.current);
-	}, []);
-  
-	useEffect(() => {
-	  resetTimer();
-	}, [currentIndex]);
-  const navigatetos=()=>{
-     window.location.href="/services"
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const intervalRef = useRef(null);
+
+  const items = [
+    {
+      src: Ptent,
+      author: 'LIFEINTELECT',
+      // title: 'Zoom out and focus deep. That’s how we view your project ',
+      topic: 'Zoom out and Focus deep. That’s how we view your Project.',
+      // description:
+      //   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    },
+    {
+      src: Ptent2,
+      author: 'LIFEINTELECT',
+      // title: 'Copyright Services',
+      topic: 'For Thoughts to Thrive, let us help Nurture your Idea.',
+      // description:
+      //   'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    },
+    {
+      src: Ptent3,
+      author: 'LIFEINTELECT',
+      // title: 'Trademark Service',
+      topic: 'Design with Innovation, Strengthen with Protection.',
+      // description:
+      //   'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+    },
+    {
+      src: Ptent4,
+      author: 'LIFEINTELECT',
+      // title: 'IP Lifecycle Management',
+      topic: 'Plan, Protect, Strategize and Excel with us.',
+      // description:
+      //   'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    },
+  ];
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % items.length);
+  };
+
+  // const prevSlide = () => {
+  //   setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
+  // };
+
+  const goToSlide = (index) => {
+    setCurrentIndex(index);
+  };
+
+  const resetTimer = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    intervalRef.current = setInterval(() => {
+      nextSlide();
+    }, 3000);
+  };
+
+  useEffect(() => {
+    resetTimer();
+    return () => clearInterval(intervalRef.current);
+  }, []);
+
+  useEffect(() => {
+    resetTimer();
+  }, [currentIndex]);
+  const navigatetos = () => {
+    window.location.href = "/services"
   }
-  const contact=()=>{
-    window.location.href="/contact"
- }
-	return (
-	  <CarouselContainer>
-		<SlideContainer translateValue={-currentIndex * 100}>
-		  {items.map((item, index) => (
-			<Slide key={index}>
-			  <Image src={item.src} alt={item.title} />
-			  <TextOverlay active={currentIndex === index}>
-				<div className="content">
-				  <div className="author">{item.author}</div>
-				  <div className="title">{item.title}</div>
-				  <div className="topic">{item.topic}</div>
-				  <div className="description">{item.description}</div>
-				  <div className="buttons">
-					<button onClick={()=>navigatetos()}>Learn More</button>
-					<button onClick={()=>contact()}>Contact Us</button>
-				  </div>
-				</div>
-			  </TextOverlay>
-			</Slide>
-		  ))}
-		</SlideContainer>
-  
-		{/* <NavButton left onClick={() => { prevSlide(); resetTimer(); }}>
+  const contact = () => {
+    window.location.href = "/contact"
+  }
+  return (
+    <CarouselContainer>
+      <SlideContainer translateValue={-currentIndex * 100}>
+        {items.map((item, index) => (
+          <Slide key={index}>
+            <Image src={item.src} alt={item.title} />
+            <TextOverlay active={currentIndex === index}>
+              <div className="content">
+                <div className="author">{item.author}</div>
+                <div className="title">{item.title}</div>
+                <div className="topic">{item.topic}</div>
+                <div className="description">{item.description}</div>
+                <div className="buttons">
+                  <button onClick={() => navigatetos()}>Learn More</button>
+                  <button onClick={() => contact()}>Contact Us</button>
+                </div>
+              </div>
+            </TextOverlay>
+          </Slide>
+        ))}
+      </SlideContainer>
+
+      {/* <NavButton left onClick={() => { prevSlide(); resetTimer(); }}>
 		  &#10094;
 		</NavButton>
 		<NavButton onClick={() => { nextSlide(); resetTimer(); }}>
 		  &#10095;
 		</NavButton> */}
-  
-		<DotsContainer>
-		  {items.map((_, index) => (
-			<Dot
-			  key={index}
-			  active={currentIndex === index}
-			  onClick={() => { goToSlide(index); resetTimer(); }}
-			/>
-		  ))}
-		</DotsContainer>
-	  </CarouselContainer>
-	);
-  }
+
+      <DotsContainer>
+        {items.map((_, index) => (
+          <Dot
+            key={index}
+            active={currentIndex === index}
+            onClick={() => { goToSlide(index); resetTimer(); }}
+          />
+        ))}
+      </DotsContainer>
+    </CarouselContainer>
+  );
+}

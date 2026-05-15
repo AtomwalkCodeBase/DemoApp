@@ -1,140 +1,141 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import { useBlog } from '../hooks/UseBlog';
-import { FaFacebookF, FaLinkedinIn, FaLink, FaReddit, FaWhatsapp, FaShareAlt } from 'react-icons/fa';
-import { SiX } from 'react-icons/si'; 
+import { collection, query, where, orderBy, limit, getDocs } from 'firebase/firestore';
+import { db } from '../Blogs/firebase';
+import { FaFacebookF, FaLinkedinIn, FaLink, FaReddit, FaWhatsapp, FaShareAlt, FaClock, FaUser, FaTag, FaArrowLeft, FaChevronRight } from 'react-icons/fa';
+import { SiX } from 'react-icons/si';
 
 // Animations
 const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 `;
 
-const slideIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+const slideInLeft = keyframes`
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+`;
+
+const slideInRight = keyframes`
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
 `;
 
 const shimmer = keyframes`
-  0% {
-    background-position: -200px 0;
-  }
-  100% {
-    background-position: calc(200px + 100%) 0;
-  }
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
 `;
 
-// Main Container
+// Styled Components
 const PageContainer = styled.div`
+margin-top: 50px;
   min-height: 100vh;
-  background: #ffffff;
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
 `;
 
-// Header Section - Completely New Design
-const HeaderSection = styled.section`
-  padding: 120px 0 0 0;
-  background: #ffffff;
-  position: relative;
+const BackButton = styled(Link)`
+  position: fixed;
+  top: 140px;
+  left: 20px;
+  background: white;
+  padding: 12px 20px;
+  border-radius: 40px;
+  text-decoration: none;
+  color: #1e293b;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  z-index: 100;
+  font-size: 0.9rem;
+
+  &:hover {
+    transform: translateX(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    color: #2563eb;
+  }
 
   @media (max-width: 768px) {
-    padding: 100px 0 0 0;
+    top: 80px;
+    left: 15px;
+    padding: 8px 16px;
+    font-size: 0.8rem;
   }
 `;
 
-const HeaderContainer = styled.div`
-  max-width: 1100px;
+const MainWrapper = styled.div`
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 120px 40px 60px;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 60px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 100px 30px 40px;
+  }
 
   @media (max-width: 768px) {
-    padding: 0 20px;
+    padding: 80px 20px 40px;
   }
 `;
 
-// const BreadcrumbNav = styled.div`
-//   display: flex;
-//   align-items: center;
-//   gap: 8px;
-//   margin-bottom: 30px;
-//   font-size: 0.9rem;
-//   color: #666;
-//   animation: ${slideIn} 0.6s ease-out;
-
-//   span {
-//     color: #999;
-//   }
-
-//   .current {
-//     color: #2563eb;
-//     font-weight: 500;
-//   }
-// `;
+const MainContent = styled.div`
+  animation: ${slideInLeft} 0.6s ease-out;
+`;
 
 const HeaderContent = styled.div`
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto 60px auto;
-  animation: ${fadeIn} 0.8s ease-out;
+  margin-bottom: 40px;
 `;
 
 const CategoryChip = styled.div`
   display: inline-flex;
   align-items: center;
-  background: #f1f5f9;
-  color: #475569;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: white;
   padding: 6px 16px;
   border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 24px;
-  border: 1px solid #e2e8f0;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
 `;
 
 const MainTitle = styled.h1`
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 900;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
   color: #0f172a;
-  line-height: 1.1;
-  margin-bottom: 20px;
+  line-height: 1.2;
+  margin-bottom: 16px;
   letter-spacing: -0.02em;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 `;
 
 const Subtitle = styled.p`
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   color: #64748b;
   line-height: 1.6;
-  margin-bottom: 32px;
-  font-weight: 400;
+  margin-bottom: 24px;
 `;
 
 const AuthorMeta = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 24px;
-  padding: 20px 0;
+  padding: 16px 0;
   border-top: 1px solid #e2e8f0;
   border-bottom: 1px solid #e2e8f0;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
 
   @media (max-width: 480px) {
-    flex-direction: column;
     gap: 16px;
   }
 `;
@@ -146,226 +147,138 @@ const MetaItem = styled.div`
   color: #64748b;
   font-size: 0.9rem;
 
+  svg {
+    color: #2563eb;
+  }
+
   .label {
     font-weight: 600;
     color: #374151;
   }
-
-  .value {
-    color: #6b7280;
-  }
-`;
-
-const FeaturedImageContainer = styled.div`
-  position: relative;
-  margin-bottom: 80px;
-  animation: ${fadeIn} 0.8s ease-out 0.2s both;
 `;
 
 const FeaturedImage = styled.img`
   width: 100%;
-  height: 500px;
+  height: auto;
+  max-height: 500px;
   object-fit: cover;
-  border-radius: 16px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  border-radius: 20px;
+  margin-bottom: 40px;
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
 
-  @media (max-width: 768px) {
-    height: 300px;
-    border-radius: 12px;
-  }
-`;
-
-// const ImageOverlay = styled.div`
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   right: 0;
-//   bottom: 0;
-//   background: linear-gradient(
-//     to bottom,
-//     transparent 0%,
-//     transparent 60%,
-//     rgba(248, 243, 243, 0.1) 100%
-//   );
-//   border-radius: 16px;
-
-//   @media (max-width: 768px) {
-//     border-radius: 12px;
-//   }
-// `;
-
-// Content Section
-const ContentSection = styled.section`
-  background: #ffffff;
-  padding-bottom: 100px;
-`;
-
-const ContentContainer = styled.div`
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 0 40px;
-
-  @media (max-width: 768px) {
-    padding: 0 20px;
+  &:hover {
+    transform: scale(1.02);
   }
 `;
 
 const ArticleSection = styled.div`
   margin-bottom: 48px;
   animation: ${fadeIn} 0.6s ease-out;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
 `;
 
 const SectionHeading = styled.h2`
-  font-size: 2rem;
-  font-weight: 800;
+  font-size: 1.75rem;
+  font-weight: 700;
   color: #0f172a;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
   line-height: 1.3;
-  position: relative;
   padding-bottom: 12px;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 50px;
-    height: 3px;
-    background: linear-gradient(90deg, #2563eb, #3b82f6);
-    border-radius: 2px;
-  }
+  border-bottom: 2px solid #e2e8f0;
 
   @media (max-width: 768px) {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 `;
 
 const SubHeading = styled.h3`
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.3rem;
+  font-weight: 600;
   color: #1e293b;
-  margin: 36px 0 20px 0;
+  margin: 32px 0 16px;
   line-height: 1.4;
-
-  @media (max-width: 768px) {
-    font-size: 1.3rem;
-  }
 `;
 
 const ArticleParagraph = styled.p`
-  font-size: 1.125rem;
+  font-size: 1.05rem;
   line-height: 1.75;
-  color: #374151;
-  margin-bottom: 24px;
-  text-align: justify;
+  color: #334155;
+  margin-bottom: 20px;
 
   &.lead-paragraph {
-    font-size: 1.2rem;
-    color: #1f2937;
-    font-weight: 400;
+    font-size: 1.15rem;
+    color: #1e293b;
+    font-weight: 500;
     
     &::first-letter {
-      font-size: 3.5rem;
+      font-size: 3rem;
       font-weight: 800;
       float: left;
       line-height: 1;
       margin: 4px 12px 0 0;
       color: #2563eb;
-      font-family: 'Georgia', serif;
     }
   }
 
   @media (max-width: 768px) {
     font-size: 1rem;
     text-align: left;
-    
-    &.lead-paragraph::first-letter {
-      font-size: 2.8rem;
-      margin: 2px 8px 0 0;
-    }
   }
 `;
 
 const BulletList = styled.ul`
-  margin: 10px 0;
+  margin: 24px 0;
   padding: 0;
   list-style: none;
 
   li {
     position: relative;
-    padding: 12px 0 12px 32px;
+    padding: 8px 0 8px 28px;
     margin-bottom: 8px;
-    font-size: 1.125rem;
+    font-size: 1rem;
     line-height: 1.7;
-    color: #374151;
+    color: #334155;
 
     &::before {
-      content: '';
+      content: '▹';
       position: absolute;
       left: 0;
-      top: 20px;
-      width: 6px;
-      height: 6px;
-      background: #2563eb;
-      border-radius: 50%;
-    }
-  }
-
-  @media (max-width: 768px) {
-    margin: 24px 0;
-    
-    li {
-      font-size: 1rem;
+      color: #2563eb;
+      font-weight: bold;
     }
   }
 `;
 
 const NumberedList = styled.ol`
-  margin: 32px 0;
+  margin: 24px 0;
   padding: 0;
   list-style: none;
-  counter-reset: list-counter;
+  counter-reset: steps;
 
   li {
-    counter-increment: list-counter;
+    counter-increment: steps;
     position: relative;
-    padding: 16px 0 16px 50px;
+    padding: 12px 0 12px 45px;
     margin-bottom: 12px;
-    font-size: 1.125rem;
+    font-size: 1rem;
     line-height: 1.7;
-    color: #374151;
-    background: #f8fafc;
-    border-radius: 8px;
-    padding-right: 20px;
+    color: #334155;
 
     &::before {
-      content: counter(list-counter);
+      content: counter(steps);
       position: absolute;
-      left: 16px;
-      top: 16px;
-      width: 24px;
-      height: 24px;
-      background: #2563eb;
+      left: 0;
+      top: 12px;
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
       color: white;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 600;
-      font-size: 0.875rem;
-    }
-  }
-
-  @media (max-width: 768px) {
-    margin: 24px 0;
-    
-    li {
-      font-size: 1rem;
-      padding-left: 45px;
+      font-weight: 700;
+      font-size: 0.85rem;
     }
   }
 `;
@@ -374,94 +287,170 @@ const ArticleImage = styled.img`
   width: 100%;
   height: auto;
   border-radius: 12px;
-  margin: 40px 0;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  margin: 32px 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 `;
 
 const ShareSection = styled.div`
-  background: #ffffff;
-  padding: 40px 0 80px 0;
-  border-top: 1px solid #f0f0f0;
-`;
-
-const ShareContainer = styled.div`
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 40px;
-  display: flex;
-  justify-content: center;
-
-  @media (max-width: 768px) {
-    padding: 0 20px;
-  }
-`;
-
-const ShareButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  width: 100%;
+  margin-top: 60px;
+  padding: 40px 0;
+  border-top: 2px solid #e2e8f0;
 `;
 
 const ShareTitle = styled.h3`
   font-size: 1.25rem;
-  color: #2c2c2c;
-  margin: 0;
-  font-weight: 500;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 20px;
+  text-align: center;
 `;
 
 const ShareOptionsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-  gap: 15px;
-  width: 100%;
-  max-width: 500px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
 `;
 
 const ShareOption = styled.button`
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 8px;
-  padding: 15px 10px;
-  border-radius: 8px;
-  border: 1px solid #e5e5e5;
+  padding: 10px 20px;
+  border-radius: 40px;
+  border: 1px solid #e2e8f0;
   background: white;
   cursor: pointer;
   transition: all 0.3s ease;
-  color: ${props => props.$color || '#333'};
+  color: ${props => props.$color || '#64748b'};
+  font-weight: 500;
+  font-size: 0.9rem;
   
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    border-color: ${props => props.$color || '#ff6b6b'};
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: ${props => props.$color || '#2563eb'};
+    background: ${props => props.$color || '#f8fafc'};
+    color: white;
   }
 
   svg {
-    font-size: 1.5rem;
-  }
-
-  span {
-    font-size: 0.75rem;
-    font-weight: 500;
+    font-size: 1.1rem;
   }
 `;
 
-// Loading States
+// Sidebar Styles
+const Sidebar = styled.aside`
+  animation: ${slideInRight} 0.6s ease-out;
+`;
+
+const SidebarSection = styled.div`
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const SectionTitle = styled.h3`
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  span {
+    color: #2563eb;
+    font-size: 0.9rem;
+  }
+`;
+
+const PostList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const PostCard = styled(Link)`
+  display: flex;
+  gap: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  padding: 8px;
+  border-radius: 12px;
+
+  &:hover {
+    background: #f8fafc;
+    transform: translateX(5px);
+  }
+`;
+
+const PostImage = styled.img`
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+`;
+
+const PostInfo = styled.div`
+  flex: 1;
+`;
+
+const PostCategory = styled.span`
+  font-size: 0.7rem;
+  color: #2563eb;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  display: inline-block;
+`;
+
+const PostTitle = styled.h4`
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 4px;
+  line-height: 1.4;
+`;
+
+const PostDate = styled.span`
+  font-size: 0.7rem;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
+
+const NoPosts = styled.p`
+  color: #94a3b8;
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9rem;
+`;
+
+// Loading and Error Components
 const LoadingContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #f8fafc;
+  background: linear-gradient(135deg, #f8fafc, #ffffff);
 `;
 
 const LoadingSpinner = styled.div`
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border: 3px solid #e2e8f0;
   border-radius: 50%;
   border-top-color: #2563eb;
@@ -476,7 +465,7 @@ const LoadingSpinner = styled.div`
 const LoadingText = styled.p`
   font-size: 1rem;
   color: #64748b;
-  background: linear-gradient(90deg, #9ca3af 25%, #6b7280 50%, #9ca3af 75%);
+  background: linear-gradient(90deg, #94a3b8, #475569, #94a3b8);
   background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -490,31 +479,81 @@ const ErrorContainer = styled.div`
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #f8fafc;
   text-align: center;
-  padding: 0 20px;
+  padding: 20px;
 
   h2 {
-    font-size: 1.875rem;
-    color: #1f2937;
+    font-size: 2rem;
+    color: #0f172a;
     margin-bottom: 12px;
-    font-weight: 700;
   }
 
   p {
-    font-size: 1rem;
-    color: #6b7280;
+    color: #64748b;
   }
 `;
 
 const BlogDetail = () => {
   const { id } = useParams();
   const { blog, blogContent, loading, error } = useBlog(id);
+  const [recentPosts, setRecentPosts] = useState([]);
+  const [relatedPosts, setRelatedPosts] = useState([]);
+  console.log(relatedPosts, "fdfeded")
+  // Fetch recent and related posts
+  useEffect(() => {
+    const fetchAdditionalPosts = async () => {
+      if (!blog) return;
+
+      try {
+        // Fetch recent posts (3 most recent)
+        const recentQuery = query(
+          collection(db, 'life_blogs'),
+          orderBy('date', 'desc'),
+          limit(3)
+        );
+        const recentSnapshot = await getDocs(recentQuery);
+        const recent = recentSnapshot.docs
+          .filter(doc => doc.id !== id)
+          .map(doc => ({ id: doc.id, ...doc.data() }));
+        setRecentPosts(recent);
+
+        // Fetch related posts (same category, excluding current)
+        if (blog.category) {
+          // alert(blog.category);
+          const relatedQuery = query(
+            collection(db, 'life_blogs'),
+            // where('category', '==', blog.category),
+            orderBy('date', 'desc'),
+            // limit(4)
+          );
+          const relatedSnapshot = await getDocs(relatedQuery);
+
+          const related = relatedSnapshot.docs
+            .map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            }))
+            .filter(item =>
+              item.id !== id &&
+              item.category === blog.category
+            );
+
+          setRelatedPosts(related);
+        }
+      } catch (err) {
+        console.error('Error fetching additional posts:', err);
+      }
+    };
+
+    if (blog) {
+      fetchAdditionalPosts();
+    }
+  }, [blog, id]);
 
   const handleShare = (platform) => {
     const url = window.location.href;
     const title = blog?.title || 'Check out this article';
-    
+
     const shareUrls = {
       twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
       linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
@@ -522,52 +561,22 @@ const BlogDetail = () => {
       reddit: `https://www.reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`,
       whatsapp: `https://wa.me/?text=${encodeURIComponent(`${title}: ${url}`)}`,
     };
-    
+
     if (platform === 'copy') {
       navigator.clipboard.writeText(url).then(() => {
-        alert('Link copied to clipboard!');
+        alert('✓ Link copied to clipboard!');
       });
       return;
     }
-    
+
     if (platform === 'native' && navigator.share) {
-      navigator.share({
-        title: title,
-        text: title,
-        url: url,
-      }).catch(err => console.error('Error sharing:', err));
+      navigator.share({ title, text: title, url })
+        .catch(err => console.error('Error sharing:', err));
       return;
     }
-    
+
     window.open(shareUrls[platform], '_blank', 'width=600,height=400');
   };
-
-  if (loading) {
-    return (
-      <LoadingContainer>
-        <LoadingSpinner />
-        <LoadingText>Loading article...</LoadingText>
-      </LoadingContainer>
-    );
-  }
-
-  if (error) {
-    return (
-      <ErrorContainer>
-        <h2>Unable to load article</h2>
-        <p>{error}</p>
-      </ErrorContainer>
-    );
-  }
-
-  if (!blog || !blogContent) {
-    return (
-      <ErrorContainer>
-        <h2>Article not found</h2>
-        <p>The article you're looking for doesn't exist or has been removed.</p>
-      </ErrorContainer>
-    );
-  }
 
   const renderContent = (content, isFirst = false) => {
     switch (content.type) {
@@ -594,40 +603,71 @@ const BlogDetail = () => {
           </NumberedList>
         );
       case 'image':
-        return <ArticleImage src={content.data} alt="" />;
+        return <ArticleImage src={content.data} alt="Article visual" loading="lazy" />;
       default:
         return null;
     }
   };
 
+  if (loading) {
+    return (
+      <LoadingContainer>
+        <LoadingSpinner />
+        <LoadingText>Loading amazing content...</LoadingText>
+      </LoadingContainer>
+    );
+  }
+
+  if (error || !blog || !blogContent) {
+    return (
+      <ErrorContainer>
+        <h2>✨ Oops! Article not found</h2>
+        <p>The article you're looking for doesn't exist or has been moved.</p>
+        <BackButton to="/blog" style={{ position: 'relative', top: 'auto', left: 'auto', marginTop: '20px', display: 'inline-flex' }}>
+          <FaArrowLeft /> Back to Blog
+        </BackButton>
+      </ErrorContainer>
+    );
+  }
+
   return (
     <PageContainer>
-      <HeaderSection>
-        <HeaderContainer>
+      {/* <BackButton to="/blog">
+        <FaArrowLeft /> Back to Blog
+      </BackButton> */}
+
+      <MainWrapper>
+        <MainContent>
           <HeaderContent>
             <CategoryChip>{blog.category}</CategoryChip>
             <MainTitle>{blogContent.header.title}</MainTitle>
             <Subtitle>{blogContent.header.tagline}</Subtitle>
-            
+
             <AuthorMeta>
               <MetaItem>
+                <FaUser />
+                <span className="label">By:</span>
+                <span className="value">LifeIntelect Team</span>
+              </MetaItem>
+              <MetaItem>
+                <FaClock />
                 <span className="label">Published:</span>
                 <span className="value">{blog.date}</span>
+              </MetaItem>
+              <MetaItem>
+                <FaTag />
+                <span className="label">Category:</span>
+                <span className="value">{blog.category}</span>
               </MetaItem>
             </AuthorMeta>
           </HeaderContent>
 
-          <FeaturedImageContainer>
-            <FeaturedImage
-              src={blogContent.header.coverImage}
-              alt={blogContent.header.title}
-            />
-          </FeaturedImageContainer>
-        </HeaderContainer>
-      </HeaderSection>
+          <FeaturedImage
+            src={blogContent.header.coverImage}
+            alt={blogContent.header.title}
+            loading="eager"
+          />
 
-      <ContentSection>
-        <ContentContainer>
           {blogContent.sections.map((section, sectionIndex) => (
             <ArticleSection key={sectionIndex}>
               {section.title && <SectionHeading>{section.title}</SectionHeading>}
@@ -641,75 +681,101 @@ const BlogDetail = () => {
               </div>
             </ArticleSection>
           ))}
-        </ContentContainer>
-        
-        <ShareSection>
-          <ShareContainer>
-            <ShareButtonWrapper>
-              <ShareTitle>Share this article</ShareTitle>
-              <ShareOptionsGrid>
-                <ShareOption 
-                  onClick={() => handleShare('twitter')}
-                  $color="#1DA1F2"
-                  aria-label="Share on Twitter"
-                >
-                  <SiX size={20} />
-                  <span>Twitter</span>
+
+          <ShareSection>
+            <ShareTitle>📢 Share this article with your network</ShareTitle>
+            <ShareOptionsGrid>
+              <ShareOption onClick={() => handleShare('twitter')} $color="#1DA1F2">
+                <SiX /> Twitter
+              </ShareOption>
+              <ShareOption onClick={() => handleShare('facebook')} $color="#4267B2">
+                <FaFacebookF /> Facebook
+              </ShareOption>
+              <ShareOption onClick={() => handleShare('linkedin')} $color="#0077B5">
+                <FaLinkedinIn /> LinkedIn
+              </ShareOption>
+              <ShareOption onClick={() => handleShare('reddit')} $color="#FF5700">
+                <FaReddit /> Reddit
+              </ShareOption>
+              <ShareOption onClick={() => handleShare('whatsapp')} $color="#25D366">
+                <FaWhatsapp /> WhatsApp
+              </ShareOption>
+              <ShareOption onClick={() => handleShare('copy')} $color="#3925d3">
+                <FaLink /> Copy Link
+              </ShareOption>
+              {navigator.share && (
+                <ShareOption onClick={() => handleShare('native')} $color="#047a3f">
+                  <FaShareAlt /> Share
                 </ShareOption>
-                <ShareOption 
-                  onClick={() => handleShare('facebook')}
-                  $color="#4267B2"
-                  aria-label="Share on Facebook"
-                >
-                  <FaFacebookF />
-                  <span>Facebook</span>
-                </ShareOption>
-                <ShareOption 
-                  onClick={() => handleShare('linkedin')}
-                  $color="#0077B5"
-                  aria-label="Share on LinkedIn"
-                >
-                  <FaLinkedinIn />
-                  <span>LinkedIn</span>
-                </ShareOption>
-                <ShareOption 
-                  onClick={() => handleShare('reddit')}
-                  $color="#FF5700"
-                  aria-label="Share on Reddit"
-                >
-                  <FaReddit />
-                  <span>Reddit</span>
-                </ShareOption>
-                <ShareOption 
-                  onClick={() => handleShare('whatsapp')}
-                  $color="#25D366"
-                  aria-label="Share on WhatsApp"
-                >
-                  <FaWhatsapp />
-                  <span>WhatsApp</span>
-                </ShareOption>
-               
-                {navigator.share && (
-                  <ShareOption 
-                    onClick={() => handleShare('native')}
-                    aria-label="Share via native share"
-                  >
-                    <FaShareAlt />
-                    <span>More</span>
-                  </ShareOption>
-                )}
-                 <ShareOption 
-                  onClick={() => handleShare('copy')}
-                  aria-label="Copy link"
-                >
-                  <FaLink />
-                  <span>Copy Link</span>
-                </ShareOption>
-              </ShareOptionsGrid>
-            </ShareButtonWrapper>
-          </ShareContainer>
-        </ShareSection>
-      </ContentSection>
+              )}
+            </ShareOptionsGrid>
+          </ShareSection>
+        </MainContent>
+
+        <Sidebar>
+          {/* Recent Posts Section */}
+          <SidebarSection>
+            <SectionTitle>
+              📝 Recent Posts
+              <span>
+                <FaChevronRight size={12} />
+              </span>
+            </SectionTitle>
+            {recentPosts.length > 0 ? (
+              <PostList>
+                {recentPosts.map(post => (
+                  <PostCard key={post.id} to={`/blog/${post.id}`}>
+                    <PostImage
+                      src={post.coverImage || 'https://via.placeholder.com/80x80'}
+                      alt={post.title}
+                      loading="lazy"
+                    />
+                    <PostInfo>
+                      <PostCategory>{post.category}</PostCategory>
+                      <PostTitle>{post.title}</PostTitle>
+                      <PostDate>
+                        <FaClock size={10} /> {post.date}
+                      </PostDate>
+                    </PostInfo>
+                  </PostCard>
+                ))}
+              </PostList>
+            ) : (
+              <NoPosts>No recent posts available</NoPosts>
+            )}
+          </SidebarSection>
+
+          {/* Related Posts Section */}
+          {relatedPosts.length > 0 && (
+            <SidebarSection>
+              <SectionTitle>
+                🔗 Related Articles
+                <span>
+                  <FaChevronRight size={12} />
+                </span>
+              </SectionTitle>
+              <PostList>
+                {relatedPosts.map(post => (
+                  <PostCard key={post.id} to={`/blog/${post.id}`}>
+                    <PostImage
+                      src={post.coverImage || 'https://via.placeholder.com/80x80'}
+                      alt={post.title}
+                      loading="lazy"
+                    />
+                    <PostInfo>
+                      <PostCategory>{post.category}</PostCategory>
+                      <PostTitle>{post.title}</PostTitle>
+                      <PostDate>
+                        <FaClock size={10} /> {post.date}
+                      </PostDate>
+                    </PostInfo>
+                  </PostCard>
+                ))}
+              </PostList>
+            </SidebarSection>
+          )}
+        </Sidebar>
+      </MainWrapper>
     </PageContainer>
   );
 };

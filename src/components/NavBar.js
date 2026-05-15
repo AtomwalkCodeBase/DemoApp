@@ -37,7 +37,7 @@ const Nav = styled.nav`
   align-items: center;
   background: ${props => props.isScrolled
     ? 'rgba(255, 255, 255, 0.9)'
-    : 'linear-gradient(135deg, rgba(248, 248, 248, 0.2), rgba(255, 255, 255, 0.1))'};
+    : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9))'};
   backdrop-filter: blur(${props => props.isScrolled ? '20px' : '10px'}) saturate(180%);
   box-shadow: ${props => props.isScrolled
     ? '0 5px 20px rgba(0, 0, 0, 0.1)'
@@ -80,7 +80,7 @@ const LogoWrapper = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 120px;
+  width: 230px;
   position: relative;
   transition: all 0.3s ease;
   &::after {
@@ -201,7 +201,7 @@ const MenuItemWrapper = styled.div`
 const MenuItem = styled.a`
   color: ${props =>
     props.forceBlackText
-      ? '#fff'
+      ? '#222'
       : props.isScrolled
         ? '#222'
         : '#222'};
